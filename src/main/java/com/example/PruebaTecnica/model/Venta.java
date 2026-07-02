@@ -21,12 +21,6 @@ public class Venta {
     private EstadoVenta estado;
     private boolean borradoLogico;
 
-    @ManyToOne
-    @JoinColumn(name = "sucursal_id")
-    private Sucursal sucursal;
-
-
-
     private void anular(){
         this.estado = EstadoVenta.INACTIVO;
     }

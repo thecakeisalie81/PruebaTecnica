@@ -21,6 +21,6 @@ public class Sucursal
     private String direccion;
     private String telefono;
 
-    @OneToMany(mappedBy = "sucursal",  cascade = CascadeType.ALL)
+    @OneToMany
     private List<Venta> ventas;
 }
