@@ -1,15 +1,13 @@
 package com.example.PruebaTecnica.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -22,6 +20,11 @@ public class Venta {
     private LocalDate fecha;
     private EstadoVenta estado;
     private boolean borradoLogico;
+
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
+
 
 
     private void anular(){
