@@ -1,5 +1,6 @@
 package com.example.PruebaTecnica.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,14 @@ public class Venta {
     private EstadoVenta estado;
     private boolean borradoLogico;
 
-    private void anular(){
-        this.estado = EstadoVenta.INACTIVO;
+    @ManyToOne
+    private Sucursal sucursal;
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @JsonManagedReference
+    private List<DetalleVenta> detalleVentas;
+
+    private void cambiarEstado(EstadoVenta estado) {
+        this.estado = estado;
     }
 }

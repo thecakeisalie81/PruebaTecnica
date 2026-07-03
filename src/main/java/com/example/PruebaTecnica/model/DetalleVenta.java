@@ -18,7 +18,11 @@ public class DetalleVenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer cantidad;
-    private BigDecimal precioVenta;
+    private BigDecimal precioUnitario;
+
+    private BigDecimal subtotal(){
+        return  precioUnitario.multiply(new BigDecimal(cantidad));
+    }
 
     @ManyToOne
     private Producto producto;

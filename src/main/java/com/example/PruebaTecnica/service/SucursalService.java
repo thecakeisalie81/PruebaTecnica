@@ -2,6 +2,7 @@ package com.example.PruebaTecnica.service;
 
 import com.example.PruebaTecnica.model.Sucursal;
 import com.example.PruebaTecnica.repository.ISucursalRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +30,14 @@ public class SucursalService implements ISucursalService {
             sucursalRepository.deleteById(id);
         }
         else{
-            throw new RuntimeException("Sucursal no encontrado");
+            throw new EntityNotFoundException("Sucursal no encontrado");
         }
     }
 
     @Override
-    public void saveSucursal(Sucursal sucursal) {
+    public Sucursal saveSucursal(Sucursal sucursal) {
         sucursalRepository.save(sucursal);
+        return sucursal;
     }
 
     @Override

@@ -23,4 +23,10 @@ public class Sucursal
 
     @OneToMany
     private List<Venta> ventas;
+
+    public void  addVenta(Venta venta)
+    {
+        ventas.add(venta);
+        venta.setSucursal(this);
+    }
 }

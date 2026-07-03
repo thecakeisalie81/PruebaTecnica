@@ -18,5 +18,5 @@ public class VentaDTO {
     private LocalDate fecha;
     private Long SucursalId;
     private EstadoVenta estadoVenta;
-    private List<DetalleVentaDTO> detalle;
+    private List<DetalleVentaDTO> detalles;
 }

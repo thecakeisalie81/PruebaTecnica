@@ -2,6 +2,7 @@ package com.example.PruebaTecnica.service;
 
 import com.example.PruebaTecnica.model.Venta;
 import com.example.PruebaTecnica.repository.IVentaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +37,11 @@ public class VentaService implements IVentaService {
 
     @Override
     public void deleteVenta(Long id) {
-        if (ventaRepository.existsById(id)) {
-            ventaRepository.deleteById(id);
+        Venta venta = getVenta(id);
+        if (venta != null) {
+            venta.setBorradoLogico(true);
         }else {
-            throw new RuntimeException("No se encontro el venta con el id: " + id);
+            throw new EntityNotFoundException("No se encontro el venta con el id: " + id);
         }
     }
 }

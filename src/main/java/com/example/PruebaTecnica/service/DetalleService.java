@@ -2,6 +2,7 @@ package com.example.PruebaTecnica.service;
 
 import com.example.PruebaTecnica.model.DetalleVenta;
 import com.example.PruebaTecnica.repository.IDetalleVentaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class DetalleService implements IDetalleVentaService{
             detalleVentaRepository.deleteById(id);
         }
         else {
-            throw new RuntimeException("No existe el detalle de venta con el id: "+id);
+            throw new EntityNotFoundException("No existe el detalle de venta con el id: "+id);
         }
     }
 
