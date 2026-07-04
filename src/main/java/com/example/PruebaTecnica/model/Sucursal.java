@@ -1,5 +1,6 @@
 package com.example.PruebaTecnica.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Sucursal
     private String telefono;
 
     @OneToMany
+    @JsonManagedReference
     private List<Venta> ventas;
 
     public void  addVenta(Venta venta)

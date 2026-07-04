@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface IVentaRepository extends JpaRepository<Venta,Long> {
     
-    @Query("SELECT v FROM Venta v WHERE v.id = :idSucursal AND v.fecha = :fecha")
+    @Query("SELECT v FROM Venta v WHERE v.sucursal.id = :idSucursal AND v.fecha = :fecha")
     List<Venta> findBySucursalAndFecha(Long idSucursal, LocalDate fecha);
 }

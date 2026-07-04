@@ -45,7 +45,7 @@ public class VentasController {
             DetalleVenta detalle = new DetalleVenta();
             detalle.setPrecioUnitario(dto.getPrecioUnitario());
             detalle.setCantidad(dto.getCantidad());
-            detalle.setProducto(productoService.findProductoByNombre(dto.getNombreProducto()));
+            detalle.setProducto(productoService.getProductoById(dto.getProductoId()));
             detalle.setVenta(nuevaVenta);
             detalles.add(detalle);
         }
@@ -56,15 +56,15 @@ public class VentasController {
 
         ventaService.saveVenta(nuevaVenta);
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("sucursalId", sucursal.getId());
         map.put("Detalle",  nuevaVenta.getDetalleVentas());
 
         return ResponseEntity.ok(map);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Venta>> getVentasSucursalFecha(LocalDate fecha, Long idSucursal) {
+    @GetMapping("/{idSucursal}/{fecha}")
+    public ResponseEntity<List<Venta>> getVentasSucursalFecha(@PathVariable Long idSucursal, @PathVariable LocalDate fecha) {
         List<Venta> ventas = ventaService.getVentasSucursalYFecha(idSucursal, fecha);
         return ResponseEntity.ok(ventas);
     }

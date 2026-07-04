@@ -1,5 +1,6 @@
 package com.example.PruebaTecnica.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class Venta {
     private boolean borradoLogico;
 
     @ManyToOne
+    @JsonBackReference
     private Sucursal sucursal;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL,  orphanRemoval = true)

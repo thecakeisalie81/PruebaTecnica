@@ -50,6 +50,7 @@ public class VentaService implements IVentaService {
         Venta venta = getVenta(id);
         if (venta != null) {
             venta.setBorradoLogico(true);
+            saveVenta(venta);
         }else {
             throw new EntityNotFoundException("No se encontro el venta con el id: " + id);
         }

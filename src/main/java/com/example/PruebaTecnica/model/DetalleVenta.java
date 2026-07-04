@@ -1,6 +1,7 @@
 package com.example.PruebaTecnica.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,8 @@ public class DetalleVenta {
     @ManyToOne
     private Producto producto;
 
-    @ManyToOne
+    @ManyToOne()
+    @JsonBackReference
     private Venta venta;
 
 }
