@@ -1,18 +1,28 @@
 package com.example.PruebaTecnica.service;
 
+import com.example.PruebaTecnica.model.Sucursal;
 import com.example.PruebaTecnica.model.Venta;
+import com.example.PruebaTecnica.repository.ISucursalRepository;
 import com.example.PruebaTecnica.repository.IVentaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class VentaService implements IVentaService {
 
-    @Autowired
-    private IVentaRepository ventaRepository;
+    private final IVentaRepository ventaRepository;
+    private final ISucursalRepository sucursalRepository;
+
+    public VentaService(IVentaRepository ventaRepository, ISucursalRepository sucursalRepository) {
+        this.ventaRepository = ventaRepository;
+        this.sucursalRepository =sucursalRepository;
+
+    }
 
 
     @Override
@@ -42,6 +52,16 @@ public class VentaService implements IVentaService {
             venta.setBorradoLogico(true);
         }else {
             throw new EntityNotFoundException("No se encontro el venta con el id: " + id);
+        }
+    }
+
+    @Override
+    public List<Venta> getVentasSucursalYFecha(Long idSucursal, LocalDate fecha) {
+        boolean sucursal = sucursalRepository.existsById(idSucursal);
+        if (sucursal) {
+            return ventaRepository.findBySucursalAndFecha(idSucursal, fecha);
+        }else {
+            throw new EntityNotFoundException("No se encontro la sucursal con el id: " + idSucursal);
         }
     }
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RequestMapping("/api/ventas")
@@ -60,6 +61,12 @@ public class VentasController {
         map.put("Detalle",  nuevaVenta.getDetalleVentas());
 
         return ResponseEntity.ok(map);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Venta>> getVentasSucursalFecha(LocalDate fecha, Long idSucursal) {
+        List<Venta> ventas = ventaService.getVentasSucursalYFecha(idSucursal, fecha);
+        return ResponseEntity.ok(ventas);
     }
 
     @DeleteMapping("/{id}")
