@@ -17,7 +17,7 @@ public class ProductoService implements IProductoService {
 
     @Override
     public Producto getProductoById(Long id) {
-        return productoRepository.findById(id).orElseThrow(() -> new RuntimeException("No existe el producto con el id: " + id));
+        return productoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No existe el producto con el id: " + id));
     }
 
     @Override
@@ -41,8 +41,8 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public Producto editProducto(Producto producto) {
-        return productoRepository.save(producto);
+    public void editProducto(Producto producto) {
+        productoRepository.save(producto);
     }
 
     @Override

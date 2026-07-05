@@ -9,6 +9,6 @@ public interface IProductoService {
     public List<Producto> getProductos();
     public void deleteProductoById(Long id);
     public Producto saveProducto(Producto producto);
-    public Producto editProducto(Producto producto);
+    public void editProducto(Producto producto);
     public Producto findProductoByNombre(String nombre);
 }
