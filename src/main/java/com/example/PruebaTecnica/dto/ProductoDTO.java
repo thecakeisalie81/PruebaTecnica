@@ -17,7 +17,7 @@ public class ProductoDTO {
     private Long id;
     @NotBlank
     private String nombre;
-    @NotNull
+    @NotBlank
     private String categoria;
     @NotNull
     @Positive

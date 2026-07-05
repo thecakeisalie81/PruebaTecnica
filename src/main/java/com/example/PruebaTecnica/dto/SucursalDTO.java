@@ -1,5 +1,6 @@
 package com.example.PruebaTecnica.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SucursalDTO {
     private Long id;
+    @NotBlank
     private String nombre;
-    private String descripcion;
+    @NotBlank
+    private String direccion;
+    @NotBlank
+    private String telefono;
 }
