@@ -1,6 +1,9 @@
 package com.example.PruebaTecnica.dto;
 
 import com.example.PruebaTecnica.model.EstadoVenta;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +18,12 @@ import java.util.List;
 @AllArgsConstructor
 public class VentaDTO {
     private Long id;
+    @NotNull
     private LocalDate fecha;
+    @NotNull @Positive
     private Long SucursalId;
+    @NotNull
     private EstadoVenta estadoVenta;
+    @NotEmpty
     private List<DetalleVentaDTO> detalles;
 }

@@ -10,6 +10,7 @@ import com.example.PruebaTecnica.service.ISucursalService;
 import com.example.PruebaTecnica.service.IVentaService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @RequestMapping("/api/ventas")
 @RestController
+@Validated
 public class VentasController {
 
     private final IVentaService ventaService;
@@ -33,40 +35,42 @@ public class VentasController {
     @PostMapping
     public ResponseEntity<Map<String, Object>> saveVenta(@RequestBody VentaDTO venta) {
 
-        Sucursal sucursal = sucursalService.getSucursalById(venta.getSucursalId());
+        try{
+            Sucursal sucursal = sucursalService.getSucursalById(venta.getSucursalId());
+            Venta nuevaVenta = new Venta();
+            List<DetalleVenta> detalles = new ArrayList<>();
+            nuevaVenta.setEstado(venta.getEstadoVenta());
+            nuevaVenta.setFecha(venta.getFecha());
 
-        Venta nuevaVenta = new Venta();
-        List<DetalleVenta> detalles = new ArrayList<>();
+            for (DetalleVentaDTO dto : venta.getDetalles()) {
+                DetalleVenta detalle = new DetalleVenta();
+                detalle.setPrecioUnitario(dto.getPrecioUnitario());
+                detalle.setCantidad(dto.getCantidad());
+                detalle.setProducto(productoService.getProductoById(dto.getProductoId()));
+                detalle.setVenta(nuevaVenta);
+                detalles.add(detalle);
+            }
 
-        nuevaVenta.setEstado(venta.getEstadoVenta());
-        nuevaVenta.setFecha(venta.getFecha());
-
-        for (DetalleVentaDTO dto : venta.getDetalles()) {
-            DetalleVenta detalle = new DetalleVenta();
-            detalle.setPrecioUnitario(dto.getPrecioUnitario());
-            detalle.setCantidad(dto.getCantidad());
-            detalle.setProducto(productoService.getProductoById(dto.getProductoId()));
-            detalle.setVenta(nuevaVenta);
-            detalles.add(detalle);
+            nuevaVenta.setDetalleVentas(detalles);
+            sucursal.addVenta(nuevaVenta);
+            ventaService.saveVenta(nuevaVenta);
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("sucursalId", sucursal.getId());
+            map.put("Detalle",  nuevaVenta.getDetalleVentas());
+            return ResponseEntity.ok(map);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
         }
-
-        nuevaVenta.setDetalleVentas(detalles);
-
-        sucursal.addVenta(nuevaVenta);
-
-        ventaService.saveVenta(nuevaVenta);
-
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("sucursalId", sucursal.getId());
-        map.put("Detalle",  nuevaVenta.getDetalleVentas());
-
-        return ResponseEntity.ok(map);
     }
 
     @GetMapping("/{idSucursal}/{fecha}")
     public ResponseEntity<List<Venta>> getVentasSucursalFecha(@PathVariable Long idSucursal, @PathVariable LocalDate fecha) {
-        List<Venta> ventas = ventaService.getVentasSucursalYFecha(idSucursal, fecha);
-        return ResponseEntity.ok(ventas);
+        try{
+            List<Venta> ventas = ventaService.getVentasSucursalYFecha(idSucursal, fecha);
+            return ResponseEntity.ok(ventas);
+        }catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
