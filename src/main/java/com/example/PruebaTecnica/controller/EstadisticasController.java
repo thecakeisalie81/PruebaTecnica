@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -33,9 +34,11 @@ public class EstadisticasController {
                 collect(Collectors.groupingBy(v -> v.getProducto().getId(),
                         Collectors.summingInt(DetalleVenta::getCantidad)));
 
-        Map.Entry<Long, Integer> masVendido = cantidadVendidos.entrySet().stream()
-                .max(Comparator.comparing(Map.Entry::getValue)).get();
+        Optional<Map.Entry<Long, Integer>> masVendido = cantidadVendidos.entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue));
 
-        return ResponseEntity.ok(productoService.getProductoById(masVendido.getKey()));
+        return masVendido.map(longIntegerEntry -> ResponseEntity.ok
+                (productoService.getProductoById(longIntegerEntry.getKey())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
