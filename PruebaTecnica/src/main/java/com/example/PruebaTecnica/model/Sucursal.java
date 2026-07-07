@@ -22,7 +22,7 @@ public class Sucursal
     private String direccion;
     private String telefono;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Venta> ventas;
 
